@@ -38,7 +38,7 @@ declare -a areas=('europe' 'scandi' 'easeur' 'wsteur' 'meditr')
 
 # Experiment 
 # Possible values: 'CONTROL', 'INCLPERSIS', 'SKIPQMAP', 'DETREND', 'NO_LAGS', 'CUTFIRSTYRS'
-exp='CUTFIRSTYRS'
+exp='CONTROL'
 
 # Fit models using different nodes
 for area in "${areas[@]}"
