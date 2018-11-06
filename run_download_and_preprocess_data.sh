@@ -14,6 +14,7 @@ export https_proxy=http://wwwproxy.fmi.fi:8080
 export ftp_proxy=http://wwwproxy.fmi.fi:8080 
 
 
+mkdir -p /lustre/tmp/kamarain/netcdf_input/
 cp /home/users/kamarain/seasonal_forecasting/download_era20c_from_ecmwf.py   /lustre/tmp/kamarain/netcdf_input/
 cd /lustre/tmp/kamarain/netcdf_input/
 
