@@ -2,11 +2,6 @@
 
 
 
-# Data directories
-basedir = '/lustre/tmp/kamarain/seasonal_prediction/'
-in__dir = '/lustre/tmp/kamarain/netcdf_input/'
-out_dir = basedir+'results/'
-
 
 import sys, imp
 import numpy as np
@@ -19,6 +14,12 @@ import seaborn as sns; sns.set(style="white")
 import cartopy.crs as ccrs
 
 
+# Directories
+basedir = str(sys.argv[4])
+in__dir = str(sys.argv[5])
+out_dir = str(sys.argv[6])
+
+# Own functions
 sys.path.append(basedir)
 try:     fcts = imp.reload(fcts)
 except:  import functions as fcts

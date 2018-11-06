@@ -40,11 +40,17 @@ declare -a areas=('europe' 'scandi' 'easeur' 'wsteur' 'meditr')
 # Possible values: 'CONTROL', 'INCLPERSIS', 'SKIPQMAP', 'DETREND', 'NO_LAGS', 'CUTFIRSTYRS'
 exp='CONTROL'
 
+# Directories
+basedir='/lustre/tmp/kamarain/seasonal_prediction/'
+in__dir='/lustre/tmp/kamarain/netcdf_input/'
+out_dir='/lustre/tmp/kamarain/seasonal_prediction/results/'
+
+
 # Fit models using different nodes
 for area in "${areas[@]}"
 do
    echo $area
-   aprun -n1 -N1 -d28 python fit_models.py $y_var $area $exp &
+   aprun -n1 -N1 -d28 python fit_models.py $y_var $area $exp $basedir $in__dir $out_dir &
 done
 wait
 
@@ -52,13 +58,13 @@ wait
 for area in "${areas[@]}"
 do
    echo $area
-   aprun -n1 -N1 -d28 python plot_results_for_regions.py $y_var $area $exp &
+   aprun -n1 -N1 -d28 python plot_results_for_regions.py $y_var $area $exp $basedir $in__dir $out_dir &
 done
 wait
 
 # Plot collected results using one node
 area='europe'
-aprun -n1 -N1 -d28 python plot_collected_results.py $y_var $area $exp &
+aprun -n1 -N1 -d28 python plot_collected_results.py $y_var $area $exp $basedir $in__dir $out_dir &
 wait
 
 echo "Finished run_fit_models_and_plot_results.sh!"

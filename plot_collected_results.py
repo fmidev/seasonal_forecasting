@@ -2,12 +2,6 @@
 
 
 
-# Data directories
-basedir = '/lustre/tmp/kamarain/seasonal_prediction/'
-in__dir = '/lustre/tmp/kamarain/netcdf_input/'
-out_dir = basedir+'results/'
-
-
 import sys, imp, glob
 import numpy as np
 import pandas as pd
@@ -21,6 +15,12 @@ import cartopy.crs as ccrs
 
 from sklearn.preprocessing import StandardScaler
 
+# Directories
+basedir = str(sys.argv[4])
+in__dir = str(sys.argv[5])
+out_dir = str(sys.argv[6])
+
+# Own functions
 sys.path.append(basedir)
 try:     fcts = imp.reload(fcts)
 except:  import functions as fcts
