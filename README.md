@@ -1,4 +1,4 @@
-# Seasonal forecasting
+# Statistical seasonal forecasts
 A Python code for producing statistical seasonal forecasts in Europe.
 
 ## Dependencies
