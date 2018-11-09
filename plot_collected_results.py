@@ -11,7 +11,7 @@ import matplotlib; matplotlib.use('AGG')
 import matplotlib.pyplot as plt
 import seaborn as sns; sns.set(style="white")
 import cartopy.crs as ccrs
-#import cartopy.feature as cfeature
+import cartopy.feature as cfeature
 
 from sklearn.preprocessing import StandardScaler
 
@@ -268,8 +268,8 @@ fcts.plot_text(ax,ccrs.PlateCarree(),[5,],[35,],['MD',],'Orange',25,0,False)
 fcts.plot_text(ax,ccrs.PlateCarree(),[-4,],[70.5,],['EU',],'Purple',25,0,False)
 #ax.gridlines(linewidth=0.5)
 
-#ax.#add_feature(cfeature.LAND, zorder=0)
-ax.coastlines(); #add_feature(cfeature.COASTLINE, zorder=0)
+ax.add_feature(cfeature.LAND, zorder=0)
+ax.add_feature(cfeature.COASTLINE, zorder=0)
 
 plt.tight_layout(); 
 fig.savefig(out_dir+'fig_map_areas.png',dpi=100)
