@@ -1,10 +1,10 @@
 # Statistical seasonal forecasts
-A Python code for producing statistical seasonal forecasts in Europe.
+A Python code for producing statistical seasonal forecast experiments in Europe
 
 ## Dependencies
 The code was developed using Python 3.6 and several external libraries,
-installed with the Miniconda installer, available here:
-https://conda.io/miniconda.html.
+which were installed with the Miniconda installer, available here:
+https://conda.io/miniconda.html
 
 The conda-forge repository was used to install the libraries:
 `conda install -c conda-forge numpy scipy matplotlib cartopy xarray seaborn pandas scikit-learn`
