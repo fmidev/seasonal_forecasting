@@ -7,7 +7,7 @@ installed with the Miniconda installer, available here:
 https://conda.io/miniconda.html.
 
 The conda-forge repository was used to install the libraries:
-conda install -c conda-forge numpy scipy matplotlib cartopy xarray seaborn pandas scikit-learn
+`conda install -c conda-forge numpy scipy matplotlib cartopy xarray seaborn pandas scikit-learn`
 
 At the moment, CDO is needed to process the grib files. The code could be modified such that
 using CDO is avoided, but it has not been implemented yet.
@@ -25,7 +25,7 @@ Python dependencies are installed. One additional library, ecmwfapi, is also nee
 https://confluence.ecmwf.int/display/WEBAPI/Accessing+ECMWF+data+servers+in+batch
 
 Running the file as a regular Unix shell file:
-sh run_download_and_preprocess_data.sh 
+`sh run_download_and_preprocess_data.sh`
 
 ## Running the forecasting experiments
 For the actual code, one Unix shell file and three Python scritps are used.
@@ -38,8 +38,8 @@ Prior to running the file, make sure that the folder structures are correctly de
 Python dependencies are installed.
 
 Running the file in Voima PBS:
-qsub run_fit_models_and_plot_results.sh 
+`qsub run_fit_models_and_plot_results.sh`
 
 Running the file as a regular Unix shell file:
-sh run_fit_models_and_plot_results.sh 
+`sh run_fit_models_and_plot_results.sh`
 
