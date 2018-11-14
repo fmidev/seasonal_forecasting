@@ -171,11 +171,11 @@ for s,ssn in enumerate(data['seasons']):
                         str(msss_clim[1])[0:5]+msss_clim[3]+', MSSS (persistence): '+
                         str(msss_pers[1])[0:5]+msss_pers[3]) #+', a='+str(np.mean(alp))[0:5])
     axes1[s].set_xlim(['1940-10-31 00:00:00', '2012-10-31 00:00:00'])
-    
-    
-    plt.tight_layout(); 
-    fig1.savefig(out_dir+'fig_probab_nmodels'+str(n_models)+'_'+data['basename']+'.png',dpi=120)
-    fig1.savefig(out_dir+'fig_probab_nmodels'+str(n_models)+'_'+data['basename']+'.pdf'); #plt.show()
+
+
+plt.tight_layout(); 
+fig1.savefig(out_dir+'fig_probab_nmodels'+str(n_models)+'_'+data['basename']+'.png',dpi=120)
+fig1.savefig(out_dir+'fig_probab_nmodels'+str(n_models)+'_'+data['basename']+'.pdf'); #plt.show()
 
 
 skill_scores.to_csv(out_dir+'skill_scores_'+data['basename']+'.csv')
