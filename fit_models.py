@@ -46,12 +46,9 @@ models_out = []
 for l,ssn in enumerate(data['seasons']):
     
     print('Training years:',data['trn_yrs'])
-    print('Testing years:',data['tst_yrs'])
     
-    # Indexes for selecting data from the training and testing periods
+    # Indexes for selecting data from the training period
     trn_idx = fcts.bool_index_to_int_index(np.isin(data['Y']['time.season'], ssn) & np.isin(data['Y']['time.year'], data['trn_yrs']))
-    tst_idx = fcts.bool_index_to_int_index(np.isin(data['Y']['time.season'], ssn) & np.isin(data['Y']['time.year'], data['tst_yrs']))
-    all_idx = fcts.bool_index_to_int_index(np.isin(data['Y']['time.season'], ssn) & np.isin(data['Y']['time.year'], data['all_yrs']))
     
     # Fit LassoLarsCV models using the handy BaggingRegressor meta-estimator
     ensemble = fcts.bagging_LassoLarsCV(data['X'].values[trn_idx], data['Y'][data['y_var']].values[trn_idx],
