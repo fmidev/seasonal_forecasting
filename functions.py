@@ -200,7 +200,7 @@ def manipulate_data(ds, var, apply_latw=True, apply_detrending=True):
         #ds[var].values = Gauss_filter(ds[var].values, (0,3,3))
     
     
-    ds = ds.resample(time='3M',closed='right').mean()
+    ds = ds.resample(time='3M').mean()
     ds = ds.groupby('time.season') - ds.groupby('time.season').mean('time')
     
     if(apply_latw): ds[var].values = lat_weighting(ds[var].values, 
@@ -335,7 +335,7 @@ def read_monthly_indices_from_CLIMEXP(name_of_index):
     ds = xr.Dataset(data_vars   = {name_of_index:    ('time',data_tser[idxs])}, 
                     coords      = {'time':      dates[idxs].astype(np.datetime64)})
     
-    return ds.resample(time='1M',closed='right').mean()
+    return ds.resample(time='1M').mean()
 
 
 
@@ -365,7 +365,7 @@ def prepare_X_array(Y, y_var, X_vars, X_var_definitions,
     for i,vr in enumerate(X_clxp_definitions): 
         index = read_monthly_indices_from_CLIMEXP(vr)
         
-        index = index.resample(time='3M', closed='right').mean()
+        index = index.resample(time='3M').mean()
         index = index.groupby('time.season') - index.groupby('time.season').mean('time')
         
         X = pd.merge(X, index.to_dataframe(), left_index=True, right_index=True,  how='left')
