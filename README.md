@@ -35,7 +35,8 @@ system of FMI. The shell file can be simplified such that it can be run outside 
 system: for that, use the run_download_and_preprocess_data.sh as a template.
 
 Prior to running the file, make sure that the folder structures are correctly defined, and all
-Python dependencies are installed and visible to computing nodes.
+Python dependencies are installed and visible to computing nodes. Be sure to request enough 
+wall time for computing: e.g. in Voima the computation takes typically 2-3 hours.
 
 Running the file in Voima PBS:
 `qsub run_fit_models_and_plot_results.sh`
