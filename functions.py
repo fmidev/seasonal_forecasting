@@ -622,44 +622,50 @@ def READ_DEFINE_AND_PROCESS_EVERYTHING(basedir, in__dir):
 
 # --- Model fitting ---
 
-def search_predictors_Lasso(X,Y,vrbl_names,n_splits, n_jobs, return_lasso=True):
-
-    import numpy as np
+def bagging_LassoLarsCV(X, Y, vrbl_names, n_estimators, n_jobs):
+    
     from sklearn.model_selection import KFold, RepeatedKFold
-    from sklearn import linear_model
+    from sklearn.ensemble import BaggingRegressor
+    from sklearn.linear_model import LassoLarsCV
+    
+    max_n_estimators = 3*n_estimators
+    cv = RepeatedKFold(n_splits=5, n_repeats=3, random_state=99)
+    eps = 2e-12
     
     try: X = X.values
     except: pass
     try: Y = Y.values
     except: pass
     
-    X = np.squeeze(X); Y = np.squeeze(Y)
-    not_nans =  ~np.isnan(Y)
-    X = X[not_nans]; Y = Y[not_nans]
+    X = np.squeeze(X)
+    Y = np.squeeze(Y)
     
-    cv = RepeatedKFold(n_splits=n_splits, n_repeats=3, random_state=99)
-    eps = 2e-12 # 2e-6 # 2e-9
+    fitted_ensemble = BaggingRegressor(
+                    base_estimator=LassoLarsCV(cv=cv, eps=eps, n_jobs=int(np.sqrt(n_jobs))),
+                    n_estimators=max_n_estimators, 
+                    max_samples=0.5,
+                    bootstrap=False, 
+                    n_jobs=int(np.sqrt(n_jobs)), #8,
+                    random_state=70,
+                    verbose=1).fit(X, Y) 
     
-    lasso = linear_model.LassoLarsCV(n_jobs=n_jobs, cv=cv, eps=eps).fit(X, Y) 
+    succesful_fittings = 0; i=0; final_ensemble = []
+    while((succesful_fittings < n_estimators) & (i < max_n_estimators)):
+        
+        estimator = fitted_ensemble.estimators_[i]; i+=1
+        predictor_indices = np.abs(estimator.coef_) > 0
+        
+        if(predictor_indices.sum() > 0):
+            estimator_predictors = vrbl_names[predictor_indices]
+            n_predictors = len(estimator_predictors)
+            
+            # Append results and fitted models to the result list
+            final_ensemble.append([estimator, estimator_predictors, 
+                                    predictor_indices, n_predictors])
+            
+            succesful_fittings += 1
     
-    prd_sel = np.abs(lasso.coef_) > 0
-    
-    if(not return_lasso):
-        alpha = -99.
-        try:
-            model = linear_model.LinearRegression(n_jobs=n_jobs).fit(X[:,prd_sel], Y)
-        except: 
-            model = -99.
-    
-    if(return_lasso): 
-        alpha = lasso.alpha_
-        if(np.sum(prd_sel) > 0): 
-            model = lasso
-        else: 
-            model = -99.
-    
-    return model, np.array(vrbl_names)[prd_sel], prd_sel, lasso.coef_[prd_sel], alpha
-
+    return final_ensemble
 
 
 
