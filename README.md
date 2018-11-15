@@ -1,5 +1,5 @@
 # Statistical seasonal forecasts
-A Python code for producing statistical seasonal forecast experiments in Europe
+A Python code for producing statistical seasonal forecast experiments in Europe.
 
 ## Dependencies
 The code was developed using Python 3.6 and several external libraries,
@@ -41,6 +41,6 @@ wall time for computing: e.g. in Voima the computation takes typically 2-3 hours
 Running the file in Voima PBS:
 `qsub run_fit_models_and_plot_results.sh`
 
-Running the file as a regular Unix shell file:
+Running the file as a regular Unix shell file (modify it before trying this):
 `sh run_fit_models_and_plot_results.sh`
 
