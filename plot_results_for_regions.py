@@ -46,18 +46,7 @@ for s,ssn in enumerate(data['seasons']):
     
     ssn_idx = results['Season']==ssn 
     
-    to_plot = fcts.count_prdctr_freqs(results[ssn_idx]['Optimal predictors'], 'Predictor'); #print(to_plot)
-    to_plot['Coefficient'] = np.nan
-    coefs = {}
-    for i,pdctr in enumerate(to_plot['Predictor']):
-        coefs[pdctr] = [] #np.full(100,np.nan)
-        for row in results[ssn_idx].iterrows():
-            idx = np.array(row[1]['Optimal predictors']) == pdctr
-            coef = row[1]['Regression coefficients'][idx]
-            if(len(coef>0)): coefs[pdctr].append(coef[0])
-    
-    coefs = pd.DataFrame.from_dict(coefs, orient='index').transpose()
-    
+    to_plot = fcts.count_prdctr_freqs(results[ssn_idx]['Optimal predictors'], 'Predictor'); #print(to_plot)    
     g = sns.barplot(x='Predictor',y='Frequency (%)',data=to_plot[:15],ax=axes[0,s],palette='Reds_r'); 
     g.set_xticklabels(g.get_xticklabels(),rotation=90); 
     g.set_title(ssn)
@@ -69,8 +58,8 @@ for s,ssn in enumerate(data['seasons']):
     
 
 plt.tight_layout()
-fig1.savefig(out_dir+'fig_prd_counts_mxcps_'+data['basename']+'.png',bbox_inches='tight',dpi=120)
-fig1.savefig(out_dir+'fig_prd_counts_mxcps_'+data['basename']+'.pdf',bbox_inches='tight'); #plt.show()#
+fig1.savefig(out_dir+'fig_prd_counts_'+data['basename']+'.png',bbox_inches='tight',dpi=120)
+fig1.savefig(out_dir+'fig_prd_counts_'+data['basename']+'.pdf',bbox_inches='tight'); #plt.show()#
 
 
 
