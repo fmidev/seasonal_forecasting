@@ -649,6 +649,8 @@ def bagging_LassoLarsCV(X, Y, vrbl_names, n_estimators, n_jobs):
                     random_state=70,
                     verbose=1).fit(X, Y) 
     
+    # Definition of success in fitting: at least one predictor
+    # needs to be found
     succesful_fittings = 0; i=0; final_ensemble = []
     while((succesful_fittings < n_estimators) & (i < max_n_estimators)):
         
