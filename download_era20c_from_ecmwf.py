@@ -61,7 +61,7 @@ else:
             "levelist"  : name2code[varname][3],
             "date"      : name2code[varname][4], 
             "time"      : name2code[varname][5],
-            "format"    : "netcdf"
+            "format"    : "netcdf",
             "target"    : ncfile
            }
     server.retrieve(opts)
