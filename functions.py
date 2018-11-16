@@ -641,7 +641,7 @@ def bagging_LassoLarsCV(X, Y, vrbl_names, n_estimators, n_jobs):
     Y = np.squeeze(Y)
     
     fitted_ensemble = BaggingRegressor(
-                    base_estimator=LassoLarsCV(cv=cv, eps=eps, n_jobs=1)),
+                    base_estimator=LassoLarsCV(cv=cv, eps=eps, n_jobs=1),
                     n_estimators=max_n_estimators, 
                     max_samples=0.5, # Select 50% of training data per random sample
                     bootstrap=False, # Sampling without replacement
