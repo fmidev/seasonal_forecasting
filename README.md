@@ -9,12 +9,6 @@ https://conda.io/miniconda.html
 The conda-forge repository was used to install the libraries:
 `conda install -c conda-forge numpy scipy matplotlib cartopy xarray seaborn pandas scikit-learn`
 
-At the moment, CDO is needed to process the grib files. The code could be modified such that
-using CDO is avoided, but it has not been implemented yet.
-
-CDO is available here:
-https://code.mpimet.mpg.de/projects/cdo
-
 ## Downloading the input data  
 For downloading the data, one Unix shell file, and one Python script are used.
 The shell file, run_download_and_preprocess_data.sh, downloads directly some input data 
