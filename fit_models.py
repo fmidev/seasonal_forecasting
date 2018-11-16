@@ -41,8 +41,6 @@ data = fcts.READ_DEFINE_AND_PROCESS_EVERYTHING(basedir, in__dir)
 print('Fitting models for',data['basename'])
 
 
-t = time.time()
-
 models_out = []
 for l,ssn in enumerate(data['seasons']):
     
@@ -62,7 +60,6 @@ for l,ssn in enumerate(data['seasons']):
     print('Completed',len(ensemble),'succesful fittings for', ssn, data['y_var'], data['y_area'])
 
 
-print(time.time() - t)
 
 # Save results into a Pandas pickle object
 columns = [ 'Season','Fitted model','Optimal predictors','Indexes of optimal predictors', 
