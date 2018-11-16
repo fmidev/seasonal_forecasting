@@ -571,7 +571,7 @@ def READ_DEFINE_AND_PROCESS_EVERYTHING(basedir, in__dir):
         lags_snc = dc['lags_snc']   = (1,2)
     
  
-    n_jobs = dc['n_jobs'] = int(0.9*(multiprocessing.cpu_count()))
+    n_jobs = dc['n_jobs'] = np.min([28, int(0.9*(multiprocessing.cpu_count()))])
     seasons = dc['seasons'] = ('DJF', 'MAM' ,'JJA', 'SON')
 
     # Define a skeleton for naming output files
