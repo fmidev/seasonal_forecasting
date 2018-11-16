@@ -13,7 +13,7 @@ All input data is preprocessed inside the READ_DEFINE_AND_PROCESS_EVERYTHING rou
 
 
 
-import sys, ast, imp, multiprocessing
+import sys, ast, imp, time
 import numpy as np
 import pandas as pd
 import xarray as xr
@@ -41,6 +41,7 @@ data = fcts.READ_DEFINE_AND_PROCESS_EVERYTHING(basedir, in__dir)
 print('Fitting models for',data['basename'])
 
 
+t = time.time()
 
 models_out = []
 for l,ssn in enumerate(data['seasons']):
@@ -61,6 +62,7 @@ for l,ssn in enumerate(data['seasons']):
     print('Completed',len(ensemble),'succesful fittings for', ssn, data['y_var'], data['y_area'])
 
 
+print(time.time() - t)
 
 # Save results into a Pandas pickle object
 columns = [ 'Season','Fitted model','Optimal predictors','Indexes of optimal predictors', 
