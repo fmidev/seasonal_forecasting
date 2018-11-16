@@ -628,9 +628,9 @@ def bagging_LassoLarsCV(X, Y, vrbl_names, n_estimators, n_jobs):
     from sklearn.ensemble import BaggingRegressor
     from sklearn.linear_model import LassoLarsCV
     
-    max_n_estimators = 3*n_estimators
-    cv = RepeatedKFold(n_splits=5, n_repeats=3, random_state=99)
-    eps = 2e-12
+    max_n_estimators = 4*n_estimators
+    cv = RepeatedKFold(n_splits=5, n_repeats=4, random_state=99)
+    eps = 2e-8
     
     try: X = X.values
     except: pass
@@ -641,11 +641,11 @@ def bagging_LassoLarsCV(X, Y, vrbl_names, n_estimators, n_jobs):
     Y = np.squeeze(Y)
     
     fitted_ensemble = BaggingRegressor(
-                    base_estimator=LassoLarsCV(cv=cv, eps=eps, n_jobs=int(np.sqrt(n_jobs))),
+                    base_estimator=LassoLarsCV(cv=cv, eps=eps, n_jobs=1)),
                     n_estimators=max_n_estimators, 
-                    max_samples=0.5,
-                    bootstrap=False, 
-                    n_jobs=int(np.sqrt(n_jobs)), #8,
+                    max_samples=0.5, # Select 50% of training data per random sample
+                    bootstrap=False, # Sampling without replacement
+                    n_jobs=n_jobs, #8,
                     random_state=70,
                     verbose=1).fit(X, Y) 
     
