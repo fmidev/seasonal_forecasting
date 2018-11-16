@@ -18,7 +18,8 @@ varname = str(sys.argv[1])
 years = np.arange(1900,2011).astype(int)
 months = ('01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12')
 dates = ''
-for year, mon in itertools.product(years, months): dates = dates+'/'+str(year)+mon+'01'
+for year, mon in itertools.product(years, months): 
+    dates = dates+'/'+str(year)+mon+'01'
 
 dates = dates[1:]
 
@@ -37,14 +38,14 @@ name2code = {
              'snw':     ["141.128",                 "an",   "sfc",  "0",    dates,          "00/06/12/18",              "0"],
              'aice':    ["31.128",                  "an",   "sfc",  "0",    dates,          "00/06/12/18",              "0"],
              'smo':     ["39.128/40.128/41.128",    "an",   "sfc",  "0",    dates,          "00/06/12/18",              "0"],
-             'lsmask':  ["172.128",                 "an",   "sfc",  "0",    "1901-01-01",   "0",                        "0"]
+             'prec':    ["31.228",                  "fc",   "sfc",  "0",    dates,          "00",                       "0"],
+             'lsmask':  ["172.128",                 "an",   "sfc",  "0",    "1901-01-01",   "00",                       "0"]
             }
 
 
 
 
 basename = "%s_era20c_monthly_1900-2010" % (varname)
-grbfile  = "%s.grb" % (basename)
 ncfile   = "%s.nc" % (basename)
 
 if os.path.exists(ncfile):
@@ -60,23 +61,10 @@ else:
             "levelist"  : name2code[varname][3],
             "date"      : name2code[varname][4], 
             "time"      : name2code[varname][5],
-            "target"    : grbfile
+            "format"    : "netcdf"
+            "target"    : ncfile
            }
     server.retrieve(opts)
-
-    # Convert to netcdf and from spectral to gaussian
-    if(name2code[varname][2]=="pl"):  
-        os.system("cdo -P 4 -t ecmwf -r -f nc -sp2gpl "+" "+grbfile+" "+ncfile)
-
-    if(name2code[varname][2]=="sfc" and varname!="smo"): 
-        os.system("cdo -P 4 -t ecmwf -r -f nc -setgridtype,regular "+" "+grbfile+" "+ncfile)  
-
-    if(name2code[varname][2]=="sfc" and varname=="smo"):
-        os.system("cdo -P 4 -t ecmwf -r -f nc -setgridtype,regular "+" "+grbfile+" temp_file.nc")
-        os.system("cdo -P 4 expr,'SMO=SWVL1+SWVL2+SWVL3' temp_file.nc "+ncfile)
-        os.system("rm temp_file.nc")
-
-    os.unlink(grbfile)
 
 
 
