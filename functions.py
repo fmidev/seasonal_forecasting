@@ -411,8 +411,8 @@ def prepare_X_array(Y, y_var, X_vars, X_var_definitions,
 def read_manipulate_Y_data(y_var, in__dir, year_range, y_area):
     
     name2code = {   
-                    'MSL':['MSL', 'msl_era20c_monthly_1900-2010.nc'],
-                    'T2M':['T2M','te2m_era20c_monthly_1900-2010.nc']
+                    'MSL':['msl', 'msl_era20c_monthly_1900-2010.nc'],
+                    'T2M':['t2m','te2m_era20c_monthly_1900-2010.nc']
                 } 
 
         
@@ -432,14 +432,14 @@ def read_manipulate_X_data(in__dir, year_range, X_var_definitions):
     
     X_vars = []
     name2code = {   
-                    'TCW':['TCW', 'tcw_era20c_monthly_1900-2010.nc'],
+                    'TCW':['tcw', 'tcw_era20c_monthly_1900-2010.nc'],
                     'SMO':['sum', 'smo_era20c_monthly_1900-2010.nc'],
                     'SST':['sst',  'HadISST_sst.nc'                ], # 'SSTK','sst_era20c_monthly_1900-2010.nc'],
                     'SIC':['sic',  'HadISST_ice.nc'                ], # 'CI', 'aice_era20c_monthly_1900-2010.nc'],
-                    'SNC':['SD',  'snw_era20c_monthly_1900-2010.nc'],
-                    'Z70':['Z',   'z70_era20c_monthly_1900-2010.nc'],
-                    'MSL':['MSL', 'msl_era20c_monthly_1900-2010.nc'],
-                    'T2M':['T2M','te2m_era20c_monthly_1900-2010.nc'],
+                    'SNC':['sd',  'snw_era20c_monthly_1900-2010.nc'],
+                    'Z70':['z',   'z70_era20c_monthly_1900-2010.nc'],
+                    'MSL':['msl', 'msl_era20c_monthly_1900-2010.nc'],
+                    'T2M':['t2m','te2m_era20c_monthly_1900-2010.nc'],
                 } 
     
     for i, vrb in enumerate(X_var_definitions): 
