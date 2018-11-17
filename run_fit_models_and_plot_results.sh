@@ -9,7 +9,9 @@
 # To execute the script in FMI's Voima XC40 HPC environment, type:
 # $ qsub run_fit_models_and_plot_results.sh
 #
-# Prior to running, make sure that you reserved enough nodes: one per target domain
+# Prior to running, make sure that you 
+#   - reserved enough nodes: one per target domain
+#   - reserved enough computing time: 2-4 hours in Voima
 
 
 # Prepare the Anaconda Python environment 
