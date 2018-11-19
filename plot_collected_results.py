@@ -216,18 +216,18 @@ for i,var in enumerate(data['X_vars']):
         fgrd = pattern_ds[j].unstack('gridcell').plot.contourf(ax=axes[j,1], 
                 levels=levels,center=0, add_colorbar=True, cbar_kwargs={'label': ''})
         
-        lsmask = fcts.read_and_select(in__dir+'lsmask_era20c_monthly_1900-2010.nc', 'LSM', (-99, -99), -99)
+        lsmask = fcts.read_and_select(in__dir+'lsmask_era20c_monthly_1900-2010.nc', 'lsm', (-99, -99), -99)
         if(nme=='SST'):
-            lsmask['LSM'] = lsmask['LSM'].where(lsmask['LSM']>0.5, other=np.nan)
-            lsmask['LSM'].plot.contourf(ax=axes[j,1], add_colorbar=False, colors='k', levels=[-0.1,1.1])
+            lsmask['lsm'] = lsmask['lsm'].where(lsmask['lsm']>0.5, other=np.nan)
+            lsmask['lsm'].plot.contourf(ax=axes[j,1], add_colorbar=False, colors='k', levels=[-0.1,1.1])
         
         if(nme=='SNC'):
-            lsmask['LSM'] = lsmask['LSM'].where(lsmask['LSM']<0.5, other=np.nan)
-            lsmask['LSM'].sel(lat=slice(0,90)).plot.contourf(ax=axes[j,1], add_colorbar=False, colors='k', levels=[-0.1,1.1])
+            lsmask['lsm'] = lsmask['lsm'].where(lsmask['lsm']<0.5, other=np.nan)
+            lsmask['lsm'].sel(lat=slice(0,90)).plot.contourf(ax=axes[j,1], add_colorbar=False, colors='k', levels=[-0.1,1.1])
         
         if(nme=='SIC'):
-            lsmask['LSM'] = lsmask['LSM'].where(lsmask['LSM']>0.5, other=np.nan)
-            lsmask['LSM'].sel(lat=slice(0,90)).plot.contourf(ax=axes[j,1], add_colorbar=False, colors='k', levels=[-0.1,1.1])
+            lsmask['lsm'] = lsmask['lsm'].where(lsmask['lsm']>0.5, other=np.nan)
+            lsmask['lsm'].sel(lat=slice(0,90)).plot.contourf(ax=axes[j,1], add_colorbar=False, colors='k', levels=[-0.1,1.1])
         
         
         tser = compnnt_ds[:,j].to_dataframe().drop(columns=['season','Comp']).plot(ax=axes[j,0], legend=False)
