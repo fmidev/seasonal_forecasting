@@ -19,7 +19,7 @@ Python dependencies are installed. One additional library, ecmwfapi, is also nee
 https://confluence.ecmwf.int/display/WEBAPI/Accessing+ECMWF+data+servers+in+batch
 
 Running the file as a regular Unix shell file:
-`sh run_download_and_preprocess_data.sh`
+`bash run_download_and_preprocess_data.sh`
 
 ## Running the forecasting experiments
 For the actual code, one Unix shell file and three Python scritps are used.
@@ -36,5 +36,5 @@ Running the file in Voima PBS:
 `qsub run_fit_models_and_plot_results.sh`
 
 Running the file as a regular Unix shell file (modify it before trying this):
-`sh run_fit_models_and_plot_results.sh`
+`bash run_fit_models_and_plot_results.sh`
 
