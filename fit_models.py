@@ -18,7 +18,6 @@ import numpy as np
 import pandas as pd
 import xarray as xr
 
-from sklearn.utils import resample
 
 # Directories
 basedir = str(sys.argv[4])
