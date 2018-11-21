@@ -1,8 +1,6 @@
 # Statistical seasonal forecasts
 A Python code for producing statistical seasonal forecast experiments in Europe.
 
-**Caution! Downloading the snow data doesn't work correctly. A repair is coming to fix that.**
-
 ## Dependencies
 The code was developed using Python 3.6 and several external libraries,
 which were installed with the Miniconda installer, available here:
