@@ -55,7 +55,7 @@ else:
     opts = {
             "stream"    : "moda", 
             "dataset"   : "era20c",
-            "grid"      : "1.0/1.0",
+            "grid"      : "1.25/1.25",
             "param"     : name2code[varname][0],
             "type"      : name2code[varname][1],
             "levtype"   : name2code[varname][2],
