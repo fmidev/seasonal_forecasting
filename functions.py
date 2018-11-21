@@ -628,8 +628,8 @@ def bagging_LassoLarsCV(X, Y, vrbl_names, n_estimators, n_jobs):
     from sklearn.ensemble import BaggingRegressor
     from sklearn.linear_model import LassoLarsCV
     
-    max_n_estimators = 4*n_estimators
-    cv = RepeatedKFold(n_splits=5, n_repeats=4)
+    max_n_estimators = 3*n_estimators
+    cv = RepeatedKFold(n_splits=5, n_repeats=3)
     eps = 2e-8
     
     try: X = X.values
