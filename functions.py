@@ -194,7 +194,7 @@ def manipulate_data(ds, var, apply_latw=True, apply_detrending=True):
     (5) reject grid cells containing only NaNs (land areas for SST etc.),
     (6) and remove linear trends from different seasons (if needed)
     """
-    if((var=='SD')|(var=='SD_bc')): 
+    if((var=='SD')|(var=='sd')): 
         ds[var] = ds[var].where(ds[var]>=0, other=0.0)
         ds[var] = ds[var].where(ds[var]==0, other=1.0)
         #ds[var].values = Gauss_filter(ds[var].values, (0,3,3))
