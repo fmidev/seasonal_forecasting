@@ -50,7 +50,7 @@ for l,ssn in enumerate(data['seasons']):
     
     # Fit LassoLarsCV models using the handy BaggingRegressor meta-estimator
     ensemble = fcts.bagging_LassoLarsCV(data['X'].values[trn_idx], data['Y'][data['y_var']].values[trn_idx],
-                                        data['vrbl_names'],data['n_smpls'], data['n_jobs'])
+                                        data['vrbl_names'],data['n_smpls'], data['p_smpl'], data['n_jobs'])
     
     # Append the models to the output list, including also the season information
     for i,mdl in enumerate(ensemble):

@@ -557,7 +557,7 @@ def READ_DEFINE_AND_PROCESS_EVERYTHING(basedir, in__dir):
     rstate = dc['rstate']           = 70               
     n_folds = dc['n_folds']         = 5
     p_smpl = dc['p_smpl']           = 0.5
-    n_smpls = dc['n_smpls']         = 1000
+    n_smpls = dc['n_smpls']         = 100
     tst_len = dc['tst_len']         = 25
 
     ncomps_sst = dc['ncomps_sst']   = 6
@@ -622,7 +622,7 @@ def READ_DEFINE_AND_PROCESS_EVERYTHING(basedir, in__dir):
 
 # --- Model fitting ---
 
-def bagging_LassoLarsCV(X, Y, vrbl_names, n_estimators, n_jobs):
+def bagging_LassoLarsCV(X, Y, vrbl_names, n_estimators, p_smpl, n_jobs):
     
     from sklearn.model_selection import KFold, RepeatedKFold
     from sklearn.ensemble import BaggingRegressor
@@ -640,16 +640,18 @@ def bagging_LassoLarsCV(X, Y, vrbl_names, n_estimators, n_jobs):
     
     X = np.squeeze(X)
     Y = np.squeeze(Y)
-    
+
+
     fitted_ensemble = BaggingRegressor(
                     base_estimator=LassoLarsCV(cv=cv, eps=eps, n_jobs=1),
                     n_estimators=max_n_estimators, 
-                    max_samples=0.5, # Select 50% of training data per random sample
-                    bootstrap=False, # Sampling without replacement
-                    oob_score=False, # 
-                    n_jobs=n_jobs, #8,
+                    max_samples=p_smpl, # Select 50% of training data per random sample
+                    bootstrap=False,    # Sampling without replacement
+                    oob_score=False,    # 
+                    n_jobs=n_jobs,      #8,
                     random_state=70,
                     verbose=1).fit(X, Y) 
+    
     
     # Definition of success in fitting: at least one predictor
     # needs to be found
@@ -669,9 +671,48 @@ def bagging_LassoLarsCV(X, Y, vrbl_names, n_estimators, n_jobs):
             
             succesful_fittings += 1
     
+    
     return final_ensemble
 
 
+def boosting_LassoLarsCV(X, Y, vrbl_names, n_estimators, n_jobs):
+    
+    from sklearn.model_selection import KFold, RepeatedKFold
+    from sklearn.ensemble import AdaBoostRegressor
+    from sklearn.linear_model import LassoLarsCV
+    
+    max_n_estimators = int(3*n_estimators)
+    cv = RepeatedKFold(n_splits=5, n_repeats=3)
+    #cv = KFold(n_splits=5, shuffle=True)
+    eps = 2e-12
+    
+    try: X = X.values
+    except: pass
+    try: Y = Y.values
+    except: pass
+    
+    X = np.squeeze(X)
+    Y = np.squeeze(Y)
+
+    fitted_ensemble = AdaBoostRegressor(
+                    base_estimator=LassoLarsCV(cv=cv, eps=eps, n_jobs=n_jobs),
+                    n_estimators=max_n_estimators, 
+                    random_state=70).fit(X, Y) 
+    
+    final_ensemble = []
+    for i, estimator in enumerate(fitted_ensemble.estimators_):
+        predictor_indices = np.abs(estimator.coef_) > 0
+        
+        if(predictor_indices.sum() > 0):
+            estimator_predictors = vrbl_names[predictor_indices]
+            n_predictors = len(estimator_predictors)
+            
+            # Append results and fitted models to the result list
+            final_ensemble.append([estimator, estimator_predictors, 
+                                    predictor_indices, n_predictors])
+    
+    
+    return final_ensemble
 
 
 
