@@ -557,7 +557,7 @@ def READ_DEFINE_AND_PROCESS_EVERYTHING(basedir, in__dir):
     rstate = dc['rstate']           = 70               
     n_folds = dc['n_folds']         = 5
     p_smpl = dc['p_smpl']           = 0.5
-    n_smpls = dc['n_smpls']         = 100
+    n_smpls = dc['n_smpls']         = 1000
     tst_len = dc['tst_len']         = 25
 
     ncomps_sst = dc['ncomps_sst']   = 6

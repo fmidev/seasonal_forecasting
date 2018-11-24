@@ -25,7 +25,7 @@ wget https://www.metoffice.gov.uk/hadobs/hadisst/data/HadISST_sst.nc.gz && gunzi
 
 # Modify this list to select ERA-20C variables to download
 #declare -a vars=('vo850' 'sst' 'pmsl' 'z70' 'snw' 'aice' 'te2m' 'smo' 'tcw' 'z500')
-declare -a vars=('snw' 'te2m' 'lsmask')
+declare -a vars=('snw' 'te2m' 'lsmask' 'prec')
 
 # Download and preprocess ERA-20C
 for var in "${vars[@]}"
