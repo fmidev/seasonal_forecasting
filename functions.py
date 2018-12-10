@@ -393,7 +393,6 @@ def prepare_X_array(Y, y_var, X_vars, X_var_definitions,
         for cpn in range(X_var_definitions[vr][1]):
             vrb_name = vr+str(cpn+1)
             X.loc[:,vrb_name] = cps[:,cpn]
-            X[vrb_name][:2] = X[vrb_name][1]
             
             for lag in X_var_definitions[vr][2]:
                 X[vrb_name+'-'+str(lag)] = np.roll(X[vrb_name], lag)
