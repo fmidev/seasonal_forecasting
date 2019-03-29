@@ -9,21 +9,6 @@
 export PATH="/lustre/tmp/kamarain/miniconda/bin:$PATH"
 export LD_LIBRARY_PATH="/lustre/tmp/kamarain/miniconda/lib"
 
-export http_proxy=http://wwwproxy.fmi.fi:8080
-export https_proxy=http://wwwproxy.fmi.fi:8080
-export ftp_proxy=http://wwwproxy.fmi.fi:8080 
-
-# Copy scripts to Lustre and cd there
-cp /home/users/kamarain/seasonal_forecasting/fit_models.py                  /lustre/tmp/kamarain/seasonal_prediction/ 
-cp /home/users/kamarain/seasonal_forecasting/fit_retrospective_models.py    /lustre/tmp/kamarain/seasonal_prediction/ 
-cp /home/users/kamarain/seasonal_forecasting/plot_results_for_regions.py    /lustre/tmp/kamarain/seasonal_prediction/ 
-cp /home/users/kamarain/seasonal_forecasting/plot_results_for_ERA-Int.py    /lustre/tmp/kamarain/seasonal_prediction/ 
-cp /home/users/kamarain/seasonal_forecasting/plot_collected_results.py      /lustre/tmp/kamarain/seasonal_prediction/ 
-cp /home/users/kamarain/seasonal_forecasting/functions.py                   /lustre/tmp/kamarain/seasonal_prediction/ 
-
-cd /lustre/tmp/kamarain/seasonal_prediction/
-
-
 
 # Target variable
 y_var='T2M'
@@ -41,46 +26,29 @@ exp='CONTROL'
 src='ERA-20C'
 
 # Directories
-basedir='/lustre/tmp/kamarain/seasonal_prediction/'
+basedir='/home/users/kamarain/seasonal_forecasting/'
 in__dir='/lustre/tmp/kamarain/netcdf_input/'
 out_dir='/lustre/tmp/kamarain/seasonal_prediction/results/'
 
 
-# Fit models using different nodes
+# Fit models for each area one by one
 for area in "${areas[@]}"
 do
    echo $area
-   aprun -n1 -N1 -d28 python fit_models.py $y_var $area $exp $src $basedir $in__dir $out_dir &
+   #python fit_models.py $y_var $area $exp $src $basedir $in__dir $out_dir 
 done
-wait
 
+
+# Plot results for each area one by one
 for area in "${areas[@]}"
 do
    echo $area
-   aprun -n1 -N1 -d28 python fit_retrospective_models.py $y_var $area $exp $src $basedir $in__dir $out_dir &
+   #python plot_results_for_regions.py $y_var $area $exp $src $basedir $in__dir $out_dir 
 done
-wait
 
 
-# Plot results using different nodes
-for area in "${areas[@]}"
-do
-   echo $area
-   aprun -n1 -N1 -d28 python plot_results_for_regions.py $y_var $area $exp $src $basedir $in__dir $out_dir &
-done
-wait
-
-# Apply models to ERA-Interim 
-for area in "${areas[@]}"
-do
-   echo $area
-   #aprun -n1 -N1 -d28 python plot_results_for_ERA-Int.py $y_var $area $exp $src $basedir $in__dir $out_dir &
-done
-wait
-
-# Plot collected results using one node
+# Plot collected results 
 area='europe'
-aprun -n1 -N1 -d28 python plot_collected_results.py $y_var $area $exp $src $basedir $in__dir $out_dir &
-wait
+python plot_collected_results.py $y_var $area $exp $src $basedir $in__dir $out_dir 
 
 echo "Finished run_fit_models_and_plot_results.sh!"

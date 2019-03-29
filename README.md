@@ -14,8 +14,9 @@ For downloading the data, one Unix shell file, and one Python script are used.
 The shell file, run_download_and_preprocess_data.sh, downloads directly some input data 
 needed for modeling, and uses the download_era20c_from_ecmwf.py script to download the rest.
 
-Prior to running the file, make sure that the folder structures are correctly defined, and all
-Python dependencies are installed. One additional library, ecmwfapi, is also needed:
+Prior to running the file, make sure that the folder structures are correctly defined inside 
+the files, and all Python dependencies are installed. One additional library, ecmwfapi, 
+is also needed:
 https://confluence.ecmwf.int/display/WEBAPI/Accessing+ECMWF+data+servers+in+batch
 
 Running the file as a regular Unix shell file:
@@ -24,17 +25,15 @@ Running the file as a regular Unix shell file:
 ## Running the forecasting experiments
 For the actual code, one Unix shell file and three Python scritps are used.
 The shell file, run_fit_models_and_plot_results.sh, defines command line arguments 
-for Python scripts, and launches the scripts to computing nodes of the Voima PBS
-system of FMI. The shell file can be simplified such that it can be run outside the PBS
-system: for that, use the run_download_and_preprocess_data.sh as a template.
+for Python scripts. An alternative run file, run_fit_models_and_plot_results_VOIMA.sh, 
+launches the scripts to computing nodes of the VOIMA PBS system of FMI. 
 
-Prior to running the file, make sure that the folder structures are correctly defined, and all
-Python dependencies are installed and visible to computing nodes. Be sure to request enough 
-wall time for computing: e.g. in Voima the computation takes typically 2-3 hours.
+Prior to running the scripts, make sure that the folder structures are correctly defined, and all
+Python dependencies are installed (and visible to computing nodes if running in VOIMA). 
+In VOIMA the computation takes typically 2-3 hours, so be sure to request enough wall time.
 
-Running the file in Voima PBS:
-`qsub run_fit_models_and_plot_results.sh`
-
-Running the file as a regular Unix shell file (modify it before trying this):
+Running the experiments in a regular Unix environment:
 `bash run_fit_models_and_plot_results.sh`
 
+Running the experiments in VOIMA PBS:
+`qsub run_fit_models_and_plot_results_VOIMA.sh`

@@ -46,7 +46,7 @@ def str_n_float(data_frame):
     out_str = data_frame.copy(deep=True)
     out_flt = data_frame.copy(deep=True)
     try:
-        out_flt = out_flt.replace({'\*':''}, regex=True).astype(float)
+        out_flt = out_flt.replace(to_replace='\*',value='',regex=True).astype(float)
     except:
         out_flt = out_flt.astype(float)
     
@@ -99,7 +99,7 @@ mspr_str, mspr_flt = str_n_float(msss_pers)
 
 
 
-print('Mean ACC: ',np.nanmean(correlations.replace({'\*':''}, regex=True).astype(float)))
+print('Mean ACC: ',np.nanmean(correlations.replace(to_replace='\*',value='',regex=True).astype(float)))
 
 mean_corr = round(np.mean(corr_flt.values), 2)
 mean_mscl = round(np.mean(mscl_flt.values), 2)
