@@ -17,6 +17,10 @@ import sys, ast, imp, time
 import numpy as np
 import pandas as pd
 import xarray as xr
+from sklearn.linear_model import LassoLarsCV, LinearRegression
+from sklearn.model_selection import KFold, RepeatedKFold
+from sklearn.preprocessing import MinMaxScaler
+
 
 
 # Directories
@@ -29,10 +33,6 @@ sys.path.append(basedir)
 try:     fcts = imp.reload(fcts)
 except:  import functions as fcts
 
-# Unsuccessful fittings flood the log file without this
-#import warnings; warnings.filterwarnings("ignore")
-
-
 
 # Read and process all input data, define variables etc.
 data = fcts.READ_DEFINE_AND_PROCESS_EVERYTHING(basedir, in__dir)
@@ -40,7 +40,11 @@ data = fcts.READ_DEFINE_AND_PROCESS_EVERYTHING(basedir, in__dir)
 print('Fitting models for',data['basename'],data['experiment'])
 
 
-models_out = []
+
+columns = [ 'Season','Fitted model','Optimal predictors','Indexes of optimal predictors', 
+            'N of optimal predictors', 'In-sample ACC', 'Model weight']
+
+models_out = pd.DataFrame(columns=columns)
 for l,ssn in enumerate(data['seasons']):
     
     print('Training years:',data['trn_yrs'])
@@ -50,16 +54,31 @@ for l,ssn in enumerate(data['seasons']):
     trn_idx = fcts.bool_index_to_int_index(np.isin(data['Y']['time.season'], ssn) & np.isin(data['Y']['time.year'], data['trn_yrs']))
     
     # Fit LassoLarsCV models using the handy BaggingRegressor meta-estimator
-    ensemble = fcts.bagging_LassoLarsCV(data['X'].values[trn_idx], data['Y'][data['y_var']].values[trn_idx],
-                                        data['vrbl_names'],data['n_smpls'], data['p_smpl'], data['n_jobs'], 7000)
+    cv = KFold(n_splits=5, shuffle=True)
+    base_estimator = LassoLarsCV(eps = 2e-10, max_iter=200, cv=cv, n_jobs=1)
+    ensemble = fcts.bagging_metaestimator(data['X'].values[trn_idx], data['Y'][data['y_var']].values[trn_idx],data['vrbl_names'],
+                                            data['n_smpls'], data['p_smpl'], data['p_feat'], data['n_jobs'],  base_estimator)
+    #ensemble = fcts.bagging_LassoLarsCV(data['X'].values[trn_idx], data['Y'][data['y_var']].values[trn_idx],
+    #                                    data['vrbl_names'],data['n_smpls'], data['p_smpl'], data['n_jobs'], 7000)
     
     
-    from sklearn.preprocessing import MinMaxScaler
-    weights = MinMaxScaler().fit_transform(np.array(ensemble[:n_estimators])[:,4].reshape(-1,1))
-        
     # Append the models to the output list, including also the season information
-    for i,mdl in enumerate(ensemble[:n_estimators]):
-        models_out.append([ssn, mdl[0], mdl[1], mdl[2], mdl[3], mdl[4], weights[i]])
+    #for i,mdl in enumerate(ensemble[:n_estimators]):
+    for i,mdl in enumerate(ensemble.estimators_[:n_estimators]):
+        #models_out.append([ssn, mdl[0], mdl[1], mdl[2], mdl[3], mdl[4], weights[i]])
+        feature_idxs  = ensemble.estimators_features_[i]
+        feature_names = list(data['vrbl_names'][feature_idxs])
+        n_features = len(feature_names)
+        fcs = mdl.predict(data['X'].values[trn_idx][:,feature_idxs])
+        obs = data['Y'][data['y_var']].values[trn_idx]
+        train_period_acc = fcts.calc_corr(fcs,obs)
+        df = pd.DataFrame([[ssn, mdl, feature_names, feature_idxs, n_features, train_period_acc, -99]], columns=columns)
+        models_out = models_out.append(df)
+ 
+    # Try weighting models based on their validation scores
+    ssn_idx = models_out['Season']==ssn
+    weights = MinMaxScaler().fit_transform(models_out[ssn_idx]['In-sample ACC'].values.reshape(-1,1)) #np.array(ensemble[:n_estimators])[:,4].reshape(-1,1))
+    models_out['Model weight'].loc[ssn_idx] = weights.squeeze()
     
     print('Completed',len(ensemble),'succesful fittings for', ssn, data['y_var'], data['y_area'])
 
@@ -67,8 +86,7 @@ for l,ssn in enumerate(data['seasons']):
 
 
 # Save results into a Pandas pickle object
-columns = [ 'Season','Fitted model','Optimal predictors','Indexes of optimal predictors', 
-            'N of optimal predictors', 'In-sample ACC', 'Model weight']
+
 
 
 out = pd.DataFrame(data=np.array(models_out), columns=columns)

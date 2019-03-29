@@ -683,7 +683,8 @@ def READ_DEFINE_AND_PROCESS_EVERYTHING(basedir, in__dir):
     
     rstate = dc['rstate']           = 70               
     n_folds = dc['n_folds']         = 5
-    p_smpl = dc['p_smpl']           = 0.5
+    p_smpl = dc['p_smpl']           = 0.50
+    p_feat = dc['p_feat']           = 0.33
     n_smpls = dc['n_smpls']         = 1000
     tst_len = dc['tst_len']         = 25
 
@@ -773,6 +774,60 @@ def READ_DEFINE_AND_PROCESS_EVERYTHING(basedir, in__dir):
 
 
 # --- Model fitting ---
+
+
+
+def bagging_metaestimator(X, Y, vrbl_names, n_estimators, p_smpl, p_feat, n_jobs, base_estim):
+
+    from sklearn.model_selection import KFold, RepeatedKFold
+    from sklearn.ensemble import BaggingRegressor
+
+    cv = KFold(n_splits=5, shuffle=True)
+
+
+    try: X = X.values
+    except: pass
+    try: Y = Y.values
+    except: pass
+    
+
+    max_feats = np.max([int(X.shape[1]*p_feat), 1])
+    max_n_estim = n_estimators*5
+
+    fitted_ensemble = BaggingRegressor(
+                    base_estimator=base_estim,
+                    n_estimators=max_n_estim,   # Number of fittings
+                    max_samples=p_smpl,         # Select e.g. 50% of training data per random sample
+                    max_features=max_feats,     # Select e.g. N/3 variables randomly
+                    bootstrap=False,   # 
+                    bootstrap_features=False,
+                    oob_score=False,
+                    n_jobs=n_jobs,    #8,
+                    random_state=70,
+                    verbose=1).fit(X, Y) 
+    
+
+    final_ensemble_idx = np.zeros(max_n_estim,dtype=bool)
+    for i, estimator in enumerate(fitted_ensemble.estimators_):
+        true_indices = np.abs(estimator.coef_)>0
+        
+        # Definition of success in fitting: at least one predictor
+        # needs to be found
+        if(true_indices.sum() > 0):
+            final_ensemble_idx[i] = True
+    
+    fitted_ensemble.estimators_features_ = list(np.array(fitted_ensemble.estimators_features_)[final_ensemble_idx])
+    fitted_ensemble.estimators_features_ = fitted_ensemble.estimators_features_[0:n_estimators]
+    fitted_ensemble.estimators_ = list(np.array(fitted_ensemble.estimators_)[final_ensemble_idx])
+    fitted_ensemble.estimators_ = fitted_ensemble.estimators_[0:n_estimators]
+    
+    return fitted_ensemble
+
+
+
+
+
+
 
 def bagging_LassoLarsCV(X, Y, vrbl_names, n_estimators, p_smpl, n_jobs, max_n_estimators):
     

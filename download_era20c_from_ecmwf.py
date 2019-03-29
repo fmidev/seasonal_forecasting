@@ -3,7 +3,6 @@
 # To run this script, you need an API key
 # available from https://api.ecmwf.int/v1/key/
 #
-# Make sure that you have CDO installed prior to running the script
 
 
 import numpy as np
@@ -15,8 +14,8 @@ server = ECMWFDataServer()
 varname = str(sys.argv[1]) 
 
 # Create a datestring for monthly retrieval
-years = np.arange(1979,2019).astype(int)
-#years = np.arange(1900,2011).astype(int)
+#years = np.arange(1979,2019).astype(int)
+years = np.arange(1900,2011).astype(int)
 months = ('01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12')
 dates = ''
 for year, mon in itertools.product(years, months): 
@@ -47,8 +46,9 @@ name2code = {
 
 
 
-#basename = "%s_era20c_monthly_1900-2010" % (varname)
-basename = "%s_eraint_monthly_1979-2018" % (varname)
+basename = "%s_era20c_monthly_1900-2010" % (varname)
+#basename = "%s_eraint_monthly_1979-2018" % (varname)
+
 ncfile   = "%s.nc" % (basename)
 
 if os.path.exists(ncfile):
@@ -57,8 +57,8 @@ if os.path.exists(ncfile):
 else:
     opts = {
             "stream"    : "moda", 
-            #"dataset"   : "era20c",
-            "dataset"   : "interim",
+            "dataset"   : "era20c",
+            #"dataset"   : "interim",
             "grid"      : "1.25/1.25",
             "param"     : name2code[varname][0],
             "type"      : name2code[varname][1],
