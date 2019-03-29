@@ -15,7 +15,8 @@ server = ECMWFDataServer()
 varname = str(sys.argv[1]) 
 
 # Create a datestring for monthly retrieval
-years = np.arange(1900,2011).astype(int)
+years = np.arange(1979,2019).astype(int)
+#years = np.arange(1900,2011).astype(int)
 months = ('01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12')
 dates = ''
 for year, mon in itertools.product(years, months): 
@@ -30,6 +31,7 @@ name2code = {
              'psfc':    ["134.128",                 "an",   "sfc",  "0",    dates,          "00/03/06/09/12/15/18/21",  "0"],
              'z500':    ["129.128",                 "an",   "pl",   "500",  dates,          "00/03/06/09/12/15/18/21",  "0"],
              'z70':     ["129.128",                 "an",   "pl",   "70",   dates,          "00/03/06/09/12/15/18/21",  "0"],
+             'z15':     ["129.128",                 "an",   "pl",   "150",  dates,          "00/03/06/09/12/15/18/21",  "0"],
              'vo850':   ["138.128",                 "an",   "pl",   "850",  dates,          "00/03/06/09/12/15/18/21",  "0"],
              'vo500':   ["138.128",                 "an",   "pl",   "500",  dates,          "00/03/06/09/12/15/18/21",  "0"],
              'tcw':     ["136.128",                 "an",   "sfc",  "0",    dates,          "00/03/06/09/12/15/18/21",  "0"],
@@ -45,7 +47,8 @@ name2code = {
 
 
 
-basename = "%s_era20c_monthly_1900-2010" % (varname)
+#basename = "%s_era20c_monthly_1900-2010" % (varname)
+basename = "%s_eraint_monthly_1979-2018" % (varname)
 ncfile   = "%s.nc" % (basename)
 
 if os.path.exists(ncfile):
@@ -54,7 +57,8 @@ if os.path.exists(ncfile):
 else:
     opts = {
             "stream"    : "moda", 
-            "dataset"   : "era20c",
+            #"dataset"   : "era20c",
+            "dataset"   : "interim",
             "grid"      : "1.25/1.25",
             "param"     : name2code[varname][0],
             "type"      : name2code[varname][1],
