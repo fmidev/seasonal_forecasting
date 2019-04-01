@@ -674,9 +674,9 @@ def READ_DEFINE_AND_PROCESS_EVERYTHING(basedir, in__dir):
         
     # Define details    
     if(experiment=='CUTFIRSTYRS'):         
-        yr1 = dc['yr1']             = '1945' #'1935' #'1940' #'1945'
+        yr1 = dc['yr1']             = '1945' 
     else:
-        yr1 = dc['yr1']             = '1915' #'1900' #'1915' 
+        yr1 = dc['yr1']             = '1915' #'1900' 
           
     yr2 = dc['yr2']                 = '2010'
     
