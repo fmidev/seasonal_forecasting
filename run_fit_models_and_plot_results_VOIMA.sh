@@ -2,7 +2,7 @@
 #PBS -N fit_n_plot
 #PBS -j oe
 #PBS -k oe
-#PBS -l walltime=0:30:00
+#PBS -l walltime=1:30:00
 #PBS -l nodes=3:ppn=28
 #
 # To execute the script in FMI's Voima XC40 HPC environment, type:
@@ -58,14 +58,14 @@ out_dir='/lustre/tmp/kamarain/seasonal_prediction/results/'
 for area in "${areas[@]}"
 do
    echo $area
-   aprun -n1 -N1 -d28 python fit_models.py $y_var $area $exp $src $basedir $in__dir $out_dir &
+   #aprun -n1 -N1 -d28 python fit_models.py $y_var $area $exp $src $basedir $in__dir $out_dir &
 done
 wait
 
 for area in "${areas[@]}"
 do
    echo $area
-   aprun -n1 -N1 -d28 python fit_retrospective_models.py $y_var $area $exp $src $basedir $in__dir $out_dir &
+   #aprun -n1 -N1 -d28 python fit_retrospective_models.py $y_var $area $exp $src $basedir $in__dir $out_dir &
 done
 wait
 

@@ -35,7 +35,7 @@ out_dir='/lustre/tmp/kamarain/seasonal_prediction/results/'
 for area in "${areas[@]}"
 do
    echo $area
-   #python fit_models.py $y_var $area $exp $src $basedir $in__dir $out_dir 
+   python fit_models.py $y_var $area $exp $src $basedir $in__dir $out_dir 
 done
 
 
@@ -43,7 +43,7 @@ done
 for area in "${areas[@]}"
 do
    echo $area
-   #python plot_results_for_regions.py $y_var $area $exp $src $basedir $in__dir $out_dir 
+   python plot_results_for_regions.py $y_var $area $exp $src $basedir $in__dir $out_dir 
 done
 
 

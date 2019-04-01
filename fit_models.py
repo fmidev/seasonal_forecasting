@@ -40,11 +40,14 @@ data = fcts.READ_DEFINE_AND_PROCESS_EVERYTHING(basedir, in__dir)
 print('Fitting models for',data['basename'],data['experiment'])
 
 
-
+# Create the output data table
 columns = [ 'Season','Fitted model','Optimal predictors','Indexes of optimal predictors', 
             'N of optimal predictors', 'In-sample ACC', 'Model weight']
 
 models_out = pd.DataFrame(columns=columns)
+
+
+# Fit models for each season separately
 for l,ssn in enumerate(data['seasons']):
     
     print('Training years:',data['trn_yrs'])
@@ -57,15 +60,10 @@ for l,ssn in enumerate(data['seasons']):
     cv = KFold(n_splits=5, shuffle=True)
     base_estimator = LassoLarsCV(eps = 2e-10, max_iter=200, cv=cv, n_jobs=1)
     ensemble = fcts.bagging_metaestimator(data['X'].values[trn_idx], data['Y'][data['y_var']].values[trn_idx],data['vrbl_names'],
-                                            data['n_smpls'], data['p_smpl'], data['p_feat'], data['n_jobs'],  base_estimator)
-    #ensemble = fcts.bagging_LassoLarsCV(data['X'].values[trn_idx], data['Y'][data['y_var']].values[trn_idx],
-    #                                    data['vrbl_names'],data['n_smpls'], data['p_smpl'], data['n_jobs'], 7000)
+                                            data['n_smpls'], data['p_smpl'], data['p_feat'], data['n_jobs'],  base_estimator)   
     
-    
-    # Append the models to the output list, including also the season information
-    #for i,mdl in enumerate(ensemble[:n_estimators]):
+    # Append the models to the output table, including also the season information
     for i,mdl in enumerate(ensemble.estimators_[:n_estimators]):
-        #models_out.append([ssn, mdl[0], mdl[1], mdl[2], mdl[3], mdl[4], weights[i]])
         feature_idxs  = ensemble.estimators_features_[i]
         feature_names = list(data['vrbl_names'][feature_idxs])
         n_features = len(feature_names)
@@ -77,20 +75,15 @@ for l,ssn in enumerate(data['seasons']):
  
     # Try weighting models based on their validation scores
     ssn_idx = models_out['Season']==ssn
-    weights = MinMaxScaler().fit_transform(models_out[ssn_idx]['In-sample ACC'].values.reshape(-1,1)) #np.array(ensemble[:n_estimators])[:,4].reshape(-1,1))
+    weights = MinMaxScaler().fit_transform(models_out[ssn_idx]['In-sample ACC'].values.reshape(-1,1)) 
     models_out['Model weight'].loc[ssn_idx] = weights.squeeze()
     
     print('Completed',len(ensemble),'succesful fittings for', ssn, data['y_var'], data['y_area'])
 
 
 
-
 # Save results into a Pandas pickle object
-
-
-
-out = pd.DataFrame(data=np.array(models_out), columns=columns)
-out.to_pickle(out_dir+data['basename']+'.pkl')
+models_out.to_pickle(out_dir+data['basename']+'.pkl')
 
 
 
