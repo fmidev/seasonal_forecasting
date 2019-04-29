@@ -64,8 +64,9 @@ for l,ssn in enumerate(data['seasons']):
     
     # Append the models to the output table, including also the season information
     for i,mdl in enumerate(ensemble.estimators_[:n_estimators]):
-        feature_idxs  = ensemble.estimators_features_[i]
-        feature_names = list(data['vrbl_names'][feature_idxs])
+        feature_idxs   = ensemble.estimators_features_[i]
+        posit_features = np.abs(mdl.coef_) > 0
+        feature_names = list(data['vrbl_names'][feature_idxs][posit_features])
         n_features = len(feature_names)
         fcs = mdl.predict(data['X'].values[trn_idx][:,feature_idxs])
         obs = data['Y'][data['y_var']].values[trn_idx]

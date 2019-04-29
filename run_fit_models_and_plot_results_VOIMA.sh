@@ -58,7 +58,7 @@ out_dir='/lustre/tmp/kamarain/seasonal_prediction/results/'
 for area in "${areas[@]}"
 do
    echo $area
-   #aprun -n1 -N1 -d28 python fit_models.py $y_var $area $exp $src $basedir $in__dir $out_dir &
+   aprun -n1 -N1 -d28 python fit_models.py $y_var $area $exp $src $basedir $in__dir $out_dir &
 done
 wait
 

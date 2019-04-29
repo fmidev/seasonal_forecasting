@@ -230,9 +230,10 @@ def manipulate_data(ds, var, predef_clim, predef_trnd, trn_yrs, all_yrs,
     else: 
         ds = ds.stack(gridcell=('lat', 'lon')).fillna(0)
     
+    
+    trend_models = { }
     if(apply_detrending): 
         ds = ds.load()
-        trend_models = { }
         for ssn in ('DJF', 'MAM', 'JJA', 'SON'):
             #ssn_idx = ds['time.season'] == ssn
             
@@ -271,18 +272,7 @@ def lat_weighting(data, lat, lon):
     return weights*data
 
 
-def remove_trends(ds, var):
-    import scipy.signal as sgn
-    
-    seasons = ('DJF', 'MAM', 'JJA', 'SON')
-    ssn2mon = {'DJF':1, 'MAM':4, 'JJA':7, 'SON':10}
-    
-    for i,ssn in enumerate(seasons):
-        try:    idx = ds['time.season']==ssn
-        except: idx = ds.index.month==ssn2mon[ssn]
-        ds[var][idx] = sgn.detrend(ds[var][idx].values, axis=0, type='linear')
 
-    return ds
 
 
 def define_trends(data, x):
