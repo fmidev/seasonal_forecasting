@@ -1,6 +1,8 @@
 # Statistical seasonal forecasts
 A Python code for producing statistical seasonal forecast experiments in Europe.
+
 This code reproduces the data and experiments presented in 
+
 `Kämäräinen, M., P. Uotila, A. Y. Karpechko, O. Hyvärinen, I. Lehtonen, and J. Räisänen, 2019: Statistical Learning Methods as a Basis for Skillful Seasonal Temperature Forecasts in Europe. J. Clim., 32, 5363–5379, doi:10.1175/JCLI-D-18-0765.1.`
 
 ## Dependencies
